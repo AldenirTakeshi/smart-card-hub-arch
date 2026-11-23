@@ -4,8 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CardTest {
 
@@ -138,4 +137,18 @@ public class CardTest {
         assertEquals(new BigDecimal("700.00"), creditLine.getReservado().getValor());
     }
 
+    @Test
+    void deveGerarIdAoSerCriado(){
+        Card card = new Card(new CreditLine(Money.de("1000.00")));
+
+        assertNotNull(card.getId());
+    }
+
+    @Test
+    void cartoesDiferentesDevemTerIdsDiferentes(){
+        Card card1 = new Card(new CreditLine(Money.de("1000.00")));
+        Card card2 = new Card(new CreditLine(Money.de("1000.00")));
+
+        assertNotEquals(card1.getId(), card2.getId());
+    }
 }

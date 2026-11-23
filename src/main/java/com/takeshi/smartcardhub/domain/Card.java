@@ -1,13 +1,21 @@
 package com.takeshi.smartcardhub.domain;
 
+import java.util.UUID;
+
 public class Card {
 
+    private final UUID id;
     private final CreditLine creditLine;
     private CardStatus status;
 
     public Card(CreditLine creditLine) {
+        this.id = UUID.randomUUID();
         this.status = CardStatus.ATIVO;
         this.creditLine = creditLine;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public CardStatus getStatus() {
@@ -36,7 +44,7 @@ public class Card {
     }
 
     public void comprar(Money valor) {
-        if (this.status != CardStatus.ATIVO){
+        if (this.status != CardStatus.ATIVO) {
             throw new CartaoInativoException("Cartão não está ativo. Status atual: " + status);
         }
         creditLine.reservar(valor);
