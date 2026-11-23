@@ -16,14 +16,14 @@ public class Card {
 
     public void bloquear() {
         if (this.status != CardStatus.ATIVO) {
-            throw new TransicaoDeStatusInvalidaException("Só e possivel bloquear um cartao ativo");
+            throw new TransicaoDeStatusInvalidaException("Cartão não está ativo. Status atual: " + status);
         }
         this.status = CardStatus.BLOQUEADO;
     }
 
     public void desbloquear() {
         if (this.status != CardStatus.BLOQUEADO) {
-            throw new TransicaoDeStatusInvalidaException("Cartao nao pode ser desbloqueado");
+            throw new TransicaoDeStatusInvalidaException("Cartão não está bloqueado. Status atual: " + status);
         }
         this.status = CardStatus.ATIVO;
     }

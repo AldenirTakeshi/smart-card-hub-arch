@@ -42,6 +42,30 @@ Regras garantidas:
 - Não é possível reservar acima do limite disponível (`LimiteInsuficienteException`).
 - Não é possível capturar ou liberar mais do que está reservado (`ReservaInsuficienteException`).
 
+### `Card`: cartão
+
+Representa o cartão do cliente e controla se ele pode ser usado.
+
+| Status | Pode comprar? |
+|---|---|
+| `ATIVO` | sim |
+| `BLOQUEADO` | não (bloqueio temporário, pode ser desfeito) |
+| `CANCELADO` | não (definitivo, sem volta) |
+
+```
+ATIVO ⇄ BLOQUEADO
+ATIVO ou BLOQUEADO → CANCELADO
+```
+
+Numa compra, o cartão verifica o próprio status **antes** de pedir a reserva à linha de crédito. Assim, uma compra recusada nunca consome limite.
+
+Vários cartões podem compartilhar a mesma linha de crédito. Por exemplo, bloquear o cartão físico não impede que o virtual continue comprando.
+
+Regras garantidas:
+
+- Transições de status inválidas são recusadas (`TransicaoDeStatusInvalidaException`).
+- Cartão bloqueado ou cancelado não compra (`CartaoInativoException`).
+
 ## Testes
 
 As regras do domínio são cobertas por testes unitários, incluindo os **casos de fronteira**: uma compra exatamente igual ao disponível é aprovada, e uma compra 1 centavo acima é recusada.
@@ -56,7 +80,7 @@ mvn test
 
 - [x] `Money`: value object monetário
 - [x] `CreditLine`: reserva, captura e liberação de limite
-- [ ] `Card`: status do cartão (ativo, bloqueado, cancelado) e regras de bloqueio
+- [x] `Card`: status do cartão (ativo, bloqueado, cancelado) e regras de bloqueio
 - [ ] Casos de uso e **arquitetura hexagonal** (portas e adaptadores)
 - [ ] Persistência com **PostgreSQL** e Flyway
 - [ ] **API REST**
