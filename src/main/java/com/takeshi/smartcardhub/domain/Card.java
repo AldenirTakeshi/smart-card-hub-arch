@@ -22,6 +22,10 @@ public class Card {
         return status;
     }
 
+    public Money limiteDisponivel() {
+        return creditLine.disponivel();
+    };
+
     public void bloquear() {
         if (this.status != CardStatus.ATIVO) {
             throw new TransicaoDeStatusInvalidaException("Cartão não está ativo. Status atual: " + status);
